@@ -1,0 +1,22 @@
+@import url('https://fonts.googleapis.com/css2?family=Hiragino+Mincho+ProN:wght@300;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Avenir:wght@400&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  h1, h2 {
+    font-family: 'Hiragino Mincho ProN', serif;
+  }
+  
+  body {
+    font-family: 'Avenir', sans-serif;
+  }
+}
+
+.container {
+  max-width: 1920px;
+  margin: 0 auto;
+  width: 100%;
+}

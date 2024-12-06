@@ -1,0 +1,37 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    function isAdmin() {
+      return isAuthenticated() && 
+        firestore.get(/databases/(default)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+    
+    function isVendor() {
+      return isAuthenticated() && 
+        firestore.get(/databases/(default)/documents/users/$(request.auth.uid)).data.role == 'vendor';
+    }
+
+    // Product images
+    match /products/{productId}/{allImages=**} {
+      allow read: if true;
+      allow write: if isVendor() || isAdmin();
+    }
+
+    // Designer images
+    match /designers/{designerId}/{allImages=**} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // User profile images
+    match /users/{userId}/{allImages=**} {
+      allow read: if true;
+      allow write: if request.auth.uid == userId || isAdmin();
+    }
+  }
+}
